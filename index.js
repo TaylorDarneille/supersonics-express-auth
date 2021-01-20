@@ -7,15 +7,18 @@ app.set('view engine', 'ejs')
 // tell the app to use ejs layouts
 app.use(require('express-ejs-layouts'))
 
+//body parser middleware allows us to receive form data in req.body
+app.use(express.urlencoded({extended: false}))
+
 // controller middleware
 app.use('/auth', require('./controllers/auth.js'))
 
 app.get('/', (req, res)=>{
-    res.send('you\'ve reached the home route')
+    res.render('home')
 })
 
 app.get('/profile', (req, res)=>{
-    res.send('you\'ve reached the profile route')
+    res.render('profile')
 })
 
 app.listen(process.env.PORT, ()=>{

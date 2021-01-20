@@ -6,7 +6,7 @@ router.get('/signup', (req, res)=>{
 })
 
 router.post('/signup', (req, res)=>{
-    console.log('post signup route hit')
+    res.send(req.body)
 })
 
 router.get('/login', (req, res)=>{
@@ -14,7 +14,7 @@ router.get('/login', (req, res)=>{
 })
 
 router.post('/login', (req, res)=>{
-    console.log('post login route hit')
+    res.send(req.body)
 })
 
 router.get('/logout', (req, res)=>{
