@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/signup', (req, res)=>{
-    res.send('you\'ve hit the signup route')
+    res.render('auth/signup.ejs')
 })
 
 router.post('/signup', (req, res)=>{
@@ -10,7 +10,7 @@ router.post('/signup', (req, res)=>{
 })
 
 router.get('/login', (req, res)=>{
-    res.send('you\'ve hit the login route')
+    res.render('auth/login.ejs')
 })
 
 router.post('/login', (req, res)=>{
