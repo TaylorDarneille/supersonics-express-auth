@@ -31,7 +31,23 @@ router.get('/login', (req, res)=>{
 })
 
 router.post('/login', (req, res)=>{
-    res.send(req.body)
+    db.user.findOne({
+        where: {
+            email: req.body.email,
+            password: req.body.password
+        }
+    })
+    .then(foundUser=>{
+        if(foundUser){
+            res.send(`Logged in the following user: ${foundUser.name}`)
+        } else {
+            res.send('don\'t know her - try signing up?')
+        }
+    })
+    .catch(err=>{
+        console.log(err)
+        res.send('There was an error loggin in. Check the console?')
+    })
 })
 
 router.get('/logout', (req, res)=>{
