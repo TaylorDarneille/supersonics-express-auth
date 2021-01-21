@@ -20,12 +20,19 @@ router.post('/signup', (req, res)=>{
     })
     .then(([user, wasCreated])=>{
         if(wasCreated){
-            passport.authenticate('local', {successRedirect: '/'})(req, res) // IIFE
-            res.send(`Created a new user profile for ${user.email}`)
+            passport.authenticate('local', {
+                successRedirect: '/',
+                successFlash: 'Account created and user logged in!'
+            })(req, res)
+            // res.send(`Created a new user profile for ${user.email}`)
         } else {
-            console.log('An account associate with that email address already exists! Did you mean to log in?')
+            req.flash('error', 'An account associate with that email address already exists! Did you mean to log in?')
             res.redirect('/auth/login')
         }
+    })
+    .catch(err=>{
+        req.flash('error', err.message)
+        res.redirect('/auth/signup')
     })
 })
 
@@ -35,7 +42,9 @@ router.get('/login', (req, res)=>{
 
 router.post('/login', passport.authenticate('local', {
     failureRedirect: '/auth/login',
-    successRedirect: '/'
+    successRedirect: '/',
+    successFlash: 'You are now logged in :)',
+    failureFlash: 'Invalid email or password :('
 }))
 
 router.get('/logout', (req, res)=>{

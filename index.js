@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const session = require('express-session')
 const passport = require('./config/ppConfig.js')
+const flash = require('connect-flash')
 
 // set the view enging to ejs
 app.set('view engine', 'ejs')
@@ -23,16 +24,22 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+// flash middleware
+app.use(flash())
+
+// CUSTOM MIDDLEWARE
+app.use((req, res, next)=>{
+    // before every route, attach teh flash messages and current user to res.locals
+    res.locals.alerts = req.flash()
+    res.locals.currentUser = req.user
+    next() // move on to the next piece of middleware
+})
+
 // controller middleware
 app.use('/auth', require('./controllers/auth.js'))
 
 app.get('/', (req, res)=>{
-    if(req.user) {
-        res.send(`req.user: ${req.user.name}`)
-    } else {
-        res.send('no user is currently logged in')
-    }
-    // res.render('home')
+    res.render('home')
 })
 
 app.get('/profile', (req, res)=>{
